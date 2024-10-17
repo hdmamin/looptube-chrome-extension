@@ -2,7 +2,7 @@ A chrome extension to allow opening youtube videos with looptube.io (thereby byp
 
 Created with claude-3.5-sonnet.
 
-## Loading the extension in Chrome:
+## Loading the extension in Chrome
 
 1. Clone this repo: `git clone https://github.com/hdmamin/looptube-chrome-extension.git`
 2. Open Google chrome and go to chrome://extensions/
