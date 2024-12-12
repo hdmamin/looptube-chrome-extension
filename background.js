@@ -11,7 +11,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "openWithLooptube") {
     const videoId = extractVideoId(info.linkUrl);
     if (videoId) {
-      chrome.tabs.create({
+      chrome.tabs.update({
         url: `https://looptube.io/?videoId=${videoId}`
       });
     }
