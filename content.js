@@ -12,26 +12,28 @@ document.addEventListener('mousedown', function(event) {
 // with looptube.
 function createLooptubeLink() {
   const videoId = new URLSearchParams(window.location.search).get('v');
+  const existingLink = document.querySelector('.looptube-link');
+
   if (videoId) {
-    // Check if link already exists to prevent duplicates
-    if (document.querySelector('.looptube-link')) return;
-
-    // Target the video title element
-    const titleElement = document.querySelector('h1.ytd-watch-metadata');
-    if (titleElement) {
-      const looptubeLink = document.createElement('a');
-      looptubeLink.href = `https://looptube.io/?videoId=${videoId}`;
-      looptubeLink.textContent = '▶️ Open with Looptube';
-      looptubeLink.className = 'looptube-link';
-      looptubeLink.style.cssText = `
-        display: inline-block;
-        margin-left: 10px;
-        color: #065fd4;
-        text-decoration: none;
-        font-size: 0.9em;
-      `;
-
-      titleElement.appendChild(looptubeLink);
+    if (!existingLink) {
+      const titleElement = document.querySelector('h1.ytd-watch-metadata');
+      if (titleElement) {
+        const looptubeLink = document.createElement('a');
+        looptubeLink.href = `https://looptube.io/?videoId=${videoId}`;
+        looptubeLink.textContent = '▶️ Open with Looptube';
+        looptubeLink.className = 'looptube-link';
+        looptubeLink.style.cssText = `
+          display: inline-block;
+          margin-left: 10px;
+          color: #065fd4;
+          text-decoration: none;
+          font-size: 0.9em;
+        `;
+        titleElement.appendChild(looptubeLink);
+      }
+    } else {
+      // Update the existing link's href to the current video ID
+      existingLink.href = `https://looptube.io/?videoId=${videoId}`;
     }
   }
 }
@@ -60,11 +62,21 @@ if (window.location.hostname === 'looptube.io') {
     
     document.body.prepend(searchContainer);
 
-    document.getElementById('searchButton').addEventListener('click', function() {
-      const query = document.getElementById('youtubeSearch').value;
+    const searchButton = document.getElementById('searchButton');
+    const searchInput = document.getElementById('youtubeSearch');
+
+    searchButton.addEventListener('click', function() {
+      const query = searchInput.value;
       if (query) {
         const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
         window.location.href = searchUrl;
+      }
+    });
+
+    // Add event listener for Enter key
+    searchInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        searchButton.click(); // Trigger the button click
       }
     });
   }
